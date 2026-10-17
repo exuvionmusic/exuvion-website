@@ -1,5 +1,4 @@
 import Image from "next/image";
-import HeroShards from "@/components/HeroShards";
 import LiveList from "@/components/LiveList";
 import Marquee from "@/components/Marquee";
 import PhotoBand from "@/components/PhotoBand";
@@ -56,8 +55,6 @@ export default function Home() {
             height={1400}
             priority
           />
-
-          <HeroShards />
 
           <h1 className="hero__logo">
             <Image
