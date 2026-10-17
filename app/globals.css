@@ -145,7 +145,13 @@ ul {
   flex: 1;
   height: 1px;
   background: var(--line);
+  transform: scaleX(0);
   transform-origin: left;
+  transition: transform 1.4s var(--ease) 0.15s;
+}
+
+.reveal[data-shown="true"] .sec-head__rule {
+  transform: scaleX(1);
 }
 
 .sec-head__idx {
@@ -250,6 +256,24 @@ main,
   background: color-mix(in srgb, var(--ink) 86%, transparent);
   backdrop-filter: blur(7px);
   border-bottom-color: var(--line);
+}
+
+/* reading position, drawn along the nav's bottom edge */
+.nav__progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--bone);
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+
+.nav[data-stuck="true"] .nav__progress {
+  opacity: 0.55;
 }
 
 .nav__mark {
@@ -423,10 +447,18 @@ main,
   background: var(--ink-2);
 }
 
+/* --speed and --skew are driven by scroll velocity in Marquee.tsx */
+.marquee__skew {
+  transform: skewX(var(--skew, 0deg));
+  transition: transform 0.45s var(--ease);
+  will-change: transform;
+}
+
 .marquee__track {
   display: flex;
   width: max-content;
   animation: marquee 48s linear infinite;
+  animation-duration: calc(48s / var(--speed, 1));
 }
 
 .marquee:hover .marquee__track {
@@ -461,13 +493,48 @@ main,
 
 .reveal {
   opacity: 0;
+  transition: opacity 0.9s var(--ease), transform 1.1s var(--ease),
+    clip-path 1.1s var(--ease);
+}
+
+.reveal[data-from="up"] {
   transform: translateY(26px);
-  transition: opacity 1s var(--ease), transform 1.2s var(--ease);
+}
+
+/* the sideways entrances the members use — travel, tilt, and settle */
+.reveal[data-from="left"] {
+  transform: translateX(-9vw) scale(0.94) rotate(-1.4deg);
+}
+
+.reveal[data-from="right"] {
+  transform: translateX(9vw) scale(0.94) rotate(1.4deg);
+}
+
+.reveal[data-from="mask"] {
+  clip-path: inset(0 0 102% 0);
+  transform: translateY(0.18em);
 }
 
 .reveal[data-shown="true"] {
   opacity: 1;
   transform: none;
+  clip-path: inset(0 0 -20% 0);
+}
+
+/* the portrait itself wipes open behind the travelling card */
+.reveal[data-from="left"] .member__fig,
+.reveal[data-from="right"] .member__fig {
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 0.95s var(--ease) calc(var(--d, 0ms) + 40ms);
+}
+
+.reveal[data-from="right"] .member__fig {
+  clip-path: inset(0 100% 0 0);
+}
+
+.reveal[data-from="left"][data-shown="true"] .member__fig,
+.reveal[data-from="right"][data-shown="true"] .member__fig {
+  clip-path: inset(0 0 0 0);
 }
 
 /* ---------- footer ---------- */
@@ -522,8 +589,16 @@ main,
     transition-duration: 0.001ms !important;
   }
 
-  .reveal {
+  .reveal,
+  .reveal[data-from] {
     opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  .reveal .member__fig,
+  .sec-head__rule {
+    clip-path: none;
     transform: none;
   }
 }

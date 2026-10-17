@@ -8,10 +8,24 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setStuck(window.scrollY > 40);
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        setStuck(window.scrollY > 40);
+        const max = document.body.scrollHeight - window.innerHeight;
+        document.documentElement.style.setProperty(
+          "--progress",
+          String(max > 0 ? window.scrollY / max : 0),
+        );
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -55,6 +69,8 @@ export default function Nav() {
           <i />
           <i />
         </button>
+
+        <span className="nav__progress" aria-hidden="true" />
       </nav>
 
       <div className="drawer" id="drawer" data-open={open} aria-hidden={!open}>

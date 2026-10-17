@@ -27,7 +27,7 @@ const mono = IBM_Plex_Mono({
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://exuvion-website.vercel.app";
 
-const description = `${band.name} — ${band.genre.toLowerCase()} from ${band.city}, ${band.country}. Formerly ${band.formerName}. Four singles out; debut full-length arriving mid-2026.`;
+const description = `${band.name} — ${band.genre.toLowerCase()} from ${band.city}, ${band.country}. Formerly ${band.formerName}. Fifty minutes of original material live; first record in progress.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

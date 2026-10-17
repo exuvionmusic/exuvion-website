@@ -1,5 +1,6 @@
 import Image from "next/image";
 import LiveList from "@/components/LiveList";
+import Marquee from "@/components/Marquee";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
 import {
@@ -10,6 +11,7 @@ import {
   links,
   members,
   merch,
+  records,
   sections,
 } from "@/lib/content";
 
@@ -28,27 +30,9 @@ const marqueeItems = [
   "Exuvion",
   "Order & Chaos",
   `${band.city}, India`,
-  "Est. 2020",
-  "Debut LP — 2026",
+  "Shedding the old skin",
+  "Technical Death Metal",
 ];
-
-function Marquee() {
-  // Two identical runs so the -50% translation loops seamlessly.
-  const run = ["a", "b"].flatMap((key) =>
-    marqueeItems.map((item, i) => (
-      <span key={`${key}-${i}`}>
-        {item}
-        <i aria-hidden="true">◆</i>
-      </span>
-    )),
-  );
-
-  return (
-    <div className="marquee" aria-hidden="true">
-      <div className="marquee__track">{run}</div>
-    </div>
-  );
-}
 
 export default function Home() {
   return (
@@ -102,7 +86,7 @@ export default function Home() {
           </div>
         </header>
 
-        <Marquee />
+        <Marquee items={marqueeItems} />
 
         {/* ------------------------------------------------ 01 origin */}
         <section className="section section--flush" id="origin">
@@ -168,7 +152,12 @@ export default function Home() {
 
             <div className="members">
               {members.map((m, i) => (
-                <Reveal key={m.name} className="member" delay={i * 90}>
+                <Reveal
+                  key={m.name}
+                  className="member"
+                  from={i % 2 === 0 ? "left" : "right"}
+                  delay={i * 130}
+                >
                   <figure className="member__fig">
                     <span className="label member__no">
                       {String(i + 1).padStart(2, "0")}
@@ -200,21 +189,23 @@ export default function Home() {
           <div className="shell">
             <SectionHead id="records" />
 
-            <Reveal className="records__statement">
+            <Reveal className="records__statement" from="mask">
               <h3 className="display">
-                Debut full&#8209;length,
+                {records.heading}
                 <br />
-                <em>mid 2026</em>
+                <em>{records.headingEm}</em>
               </h3>
-              <p className="records__note">
-                Four singles out now. New material is being tracked for the first
-                full-length record — announcements go out on Instagram first.
-              </p>
+              <p className="records__note">{records.note}</p>
             </Reveal>
 
             <div className="art-grid">
               {artworks.map((a, i) => (
-                <Reveal key={a.title} className="art" delay={i * 120}>
+                <Reveal
+                  key={a.title}
+                  className="art"
+                  from={i % 2 === 0 ? "left" : "right"}
+                  delay={i * 120}
+                >
                   <div className="art__frame">
                     <Image
                       src={a.image}
@@ -226,15 +217,19 @@ export default function Home() {
                   </div>
                   <div className="art__meta">
                     <h4 className="display art__title">{a.title}</h4>
-                    <span className="label">Artwork</span>
+                    <span className="label">{a.release}</span>
                   </div>
+                  {a.text ? <p className="art__text serif-it">{a.text}</p> : null}
+                  {a.credit ? (
+                    <p className="label art__credit">Art by {a.credit}</p>
+                  ) : null}
                 </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        <Marquee />
+        <Marquee items={marqueeItems} />
 
         {/* ------------------------------------------------ 04 live */}
         <section className="section section--flush" id="live">
@@ -249,7 +244,7 @@ export default function Home() {
           <div className="shell">
             <SectionHead id="merch" />
 
-            <Reveal className="merch__head">
+            <Reveal className="merch__head" from="mask">
               <h3 className="display merch__status">{merch.status}</h3>
               <p className="records__note">{merch.note}</p>
             </Reveal>
@@ -259,14 +254,28 @@ export default function Home() {
                 <figure className="merch__item" key={item.title}>
                   <Image
                     src={item.image}
-                    alt={`Merch mockup — ${item.title}`}
+                    alt={`${item.title} — Exuvion merchandise`}
                     width={1100}
                     height={1100}
-                    sizes="(min-width: 900px) 23vw, 46vw"
+                    sizes="(min-width: 900px) 20vw, 46vw"
                   />
-                  <figcaption className="label">{item.title}</figcaption>
+                  <figcaption className="merch__cap">
+                    <span className="label">{item.title}</span>
+                    <span className="label merch__flag">{item.status}</span>
+                  </figcaption>
                 </figure>
               ))}
+            </Reveal>
+
+            <Reveal delay={120}>
+              <a
+                className="merch__cta label"
+                href={links.instagram}
+                target="_blank"
+                rel="noreferrer"
+              >
+                DM to pre-order ↗
+              </a>
             </Reveal>
           </div>
         </section>

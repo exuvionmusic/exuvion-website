@@ -41,13 +41,13 @@ export const bio = {
   paragraphs: [
     `Exuvion is a progressive technical death metal band from ${band.city}, ${band.country}, previously known as ${band.formerName}. The band blends genres across the breadth of metal while keeping technical death metal at its core, with music that delves into self-introspection and challenges materialism and social dogma.`,
     "The band formed in 2020 during the first wave of COVID-19 — a time of isolation and uncertainty that continues to shape their sound and their perspective. Their music explores self-awareness in a constantly shifting world, aiming to connect people through shared experience.",
-    "With four hard-hitting singles released, the band delivers a high-octane fifty-minute live set of all-original material. In 2026 they rebranded as Exuvion, and are currently finishing their debut full-length album, set for release in mid-2026.",
+    "Rebranded as Exuvion in 2026, the band plays a high-octane fifty-minute live set of entirely original material, and is writing and tracking its first record now.",
   ],
   facts: [
     { k: "Formed", v: "2020" },
-    { k: "Singles", v: "Four" },
+    { k: "First show as Exuvion", v: "06.09.2026" },
     { k: "Live set", v: "50 min, all original" },
-    { k: "Debut LP", v: "Mid 2026" },
+    { k: "First record", v: "In progress" },
   ],
 };
 
@@ -100,79 +100,77 @@ export const members: Member[] = [
   },
 ];
 
+export const records = {
+  heading: "First record,",
+  headingEm: "in progress",
+  note: "Written and tracked between Bangalore and Chennai. Announcements go out on Instagram first.",
+};
+
 export const artworks = [
   {
-    title: "Plague Birth",
+    title: "Plaguebirth",
+    release: "Artwork 002",
     image: "/img/art-plague-birth.webp",
-    bw: "/img/art-plague-birth-bw.webp",
+    credit: "Saptarshi Das",
+    text: "She is neither a demon nor a god — she is born out of pure hatred that her mortal heart could never contain. She is not here to be worshipped or appeased. She is the reckoning.",
   },
   {
     title: "Red Citadel",
+    release: "Artwork 001",
     image: "/img/art-red-citadel.webp",
-    bw: "/img/art-red-citadel-bw.webp",
+    credit: null,
+    text: null,
   },
 ];
 
 export type Show = {
-  year: string;
+  date: string;
   title: string;
+  venue: string;
   city: string;
+  note?: string;
   image: string | null;
 };
 
+/**
+ * Exuvion-era shows only — nothing from before the rebrand, and no imagery
+ * sourced from the old press kit. Photos come from the band's own Instagram.
+ */
 export const shows: Show[] = [
   {
-    year: "2026",
-    title: "The Humming Tree",
+    date: "09.10.2026",
+    title: "Bangalore Open Air — Warm-Up Party",
+    venue: "The Humming Tree",
     city: "Bangalore",
     image: null,
   },
   {
-    year: "2025",
-    title: "Opening for Northlane",
+    date: "09.2026",
+    title: "Aggressive Tendencies",
+    venue: "EXT",
+    city: "Hyderabad",
+    note: "First show in Hyderabad",
+    image: "/img/live-hyderabad.webp",
+  },
+  {
+    date: "06.09.2026",
+    title: "Outrage Festival",
+    venue: "The Humming Tree",
     city: "Bangalore",
-    image: "/img/live-northlane.webp",
-  },
-  {
-    year: "2025",
-    title: "Hisaab Barabar India Tour",
-    city: "Bangalore",
-    image: "/img/live-hisaab-bangalore.webp",
-  },
-  {
-    year: "2025",
-    title: "Hisaab Barabar India Tour",
-    city: "Kolkata",
-    image: "/img/live-hisaab-kolkata.webp",
-  },
-  {
-    year: "2023",
-    title: "Slaughterfest v1",
-    city: "Bangalore",
-    image: "/img/live-slaughterfest.webp",
-  },
-  {
-    year: "2022",
-    title: "The Pit v10.0",
-    city: "Kolkata",
-    image: "/img/live-the-pit.webp",
-  },
-  {
-    year: "—",
-    title: "Modern Machines v2",
-    city: "Bangalore",
-    image: "/img/live-modern-machines.webp",
+    note: "Debut show as Exuvion",
+    image: "/img/live-outrage-debut.webp",
   },
 ];
 
 export const merch = {
-  status: "Forthcoming",
-  note: "Shirts, oversized tees and shorts. The drop is announced on Instagram first.",
+  status: "Pre-order",
+  note: "The Plaguebirth hoodie is open for pre-order — DM on Instagram to claim one. Tees, oversized tees and shorts follow.",
   items: [
-    { title: "Red Citadel Tee — Front", image: "/img/merch-tee-front.webp" },
-    { title: "Red Citadel Tee — Back", image: "/img/merch-tee-back.webp" },
-    { title: "Oversized Tee", image: "/img/merch-oversized.webp" },
-    { title: "Shorts", image: "/img/merch-shorts.webp" },
+    { title: "Plaguebirth Hoodie", image: "/img/merch-hoodie.webp", status: "Pre-order" },
+    { title: "Red Citadel Tee — Front", image: "/img/merch-tee-front.webp", status: "Soon" },
+    { title: "Red Citadel Tee — Back", image: "/img/merch-tee-back.webp", status: "Soon" },
+    { title: "Oversized Tee", image: "/img/merch-oversized.webp", status: "Soon" },
+    { title: "Shorts", image: "/img/merch-shorts.webp", status: "Soon" },
   ],
 };
 

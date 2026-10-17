@@ -1,11 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Reveal from "@/components/Reveal";
 import { shows } from "@/lib/content";
 
 /**
- * Archive of past shows. On pointer devices, hovering a row floats that
- * night's photo under the cursor; touch devices get a swipeable strip instead.
+ * Exuvion's shows. On pointer devices, hovering a row floats that night's
+ * photo under the cursor; touch devices get a swipeable strip instead.
  */
 export default function LiveList() {
   const [active, setActive] = useState<string | null>(null);
@@ -26,21 +27,35 @@ export default function LiveList() {
   return (
     <>
       <div className="live__list" onMouseMove={move}>
-        {shows.map((show) => (
-          <div
-            key={`${show.title}-${show.city}-${show.year}`}
-            className="live__row"
-            onMouseEnter={() => setActive(show.image)}
-            onMouseLeave={() => setActive(null)}
+        {shows.map((show, i) => (
+          <Reveal
+            key={`${show.title}-${show.city}-${show.date}`}
+            from="left"
+            delay={i * 110}
           >
-            <span className="mono">{show.year}</span>
-            <span className="live__title">{show.title}</span>
-            <span className="live__city label">{show.city}</span>
-          </div>
+            <div
+              className="live__row"
+              data-haspic={Boolean(show.image)}
+              onMouseEnter={() => setActive(show.image)}
+              onMouseLeave={() => setActive(null)}
+            >
+              <span className="mono live__date">{show.date}</span>
+              <span className="live__title">{show.title}</span>
+              {show.note ? <span className="label live__note">{show.note}</span> : null}
+              <span className="live__where label">
+                {show.venue} — {show.city}
+              </span>
+            </div>
+          </Reveal>
         ))}
       </div>
 
-      <div className="live__preview" ref={previewRef} data-show={Boolean(active)} aria-hidden="true">
+      <div
+        className="live__preview"
+        ref={previewRef}
+        data-show={Boolean(active)}
+        aria-hidden="true"
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {active ? <img src={active} alt="" /> : null}
       </div>
