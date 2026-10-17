@@ -145,7 +145,7 @@ export const shows: Show[] = [
     image: null,
   },
   {
-    date: "09.2026",
+    date: "11.09.2026",
     title: "Aggressive Tendencies",
     venue: "EXT",
     city: "Hyderabad",
