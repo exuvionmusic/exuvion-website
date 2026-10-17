@@ -23,7 +23,9 @@ const mono = IBM_Plex_Mono({
   variable: "--f-mono",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://exuvion.vercel.app";
+// Set NEXT_PUBLIC_SITE_URL in the Vercel project when a custom domain is added.
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://exuvion-website.vercel.app";
 
 const description = `${band.name} — ${band.genre.toLowerCase()} from ${band.city}, ${band.country}. Formerly ${band.formerName}. Four singles out; debut full-length arriving mid-2026.`;
 
