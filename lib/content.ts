@@ -100,6 +100,15 @@ export const members: Member[] = [
   },
 ];
 
+/** Live-photo fragments scattered behind the hero wordmark. */
+export const shards = [
+  { src: "/img/shard-01.webp", w: 720, h: 414, depth: 1.0, rot: -3 },
+  { src: "/img/shard-02.webp", w: 720, h: 697, depth: 1.8, rot: 2.5 },
+  { src: "/img/shard-03.webp", w: 428, h: 720, depth: 0.7, rot: 4 },
+  { src: "/img/shard-04.webp", w: 720, h: 487, depth: 2.3, rot: -2 },
+  { src: "/img/shard-05.webp", w: 408, h: 480, depth: 1.4, rot: 5.5 },
+];
+
 export const records = {
   heading: "First record,",
   headingEm: "in progress",
@@ -129,7 +138,9 @@ export type Show = {
   venue: string;
   city: string;
   note?: string;
-  image: string | null;
+  /** Carousel slides from the band's Instagram post for that night. */
+  images: string[];
+  credit?: string;
 };
 
 /**
@@ -142,7 +153,7 @@ export const shows: Show[] = [
     title: "Bangalore Open Air — Warm-Up Party",
     venue: "The Humming Tree",
     city: "Bangalore",
-    image: null,
+    images: [],
   },
   {
     date: "11.09.2026",
@@ -150,7 +161,8 @@ export const shows: Show[] = [
     venue: "EXT",
     city: "Hyderabad",
     note: "First show in Hyderabad",
-    image: "/img/live-hyderabad.webp",
+    images: ["/img/live-hyderabad-01.webp", "/img/live-hyderabad-02.webp"],
+    credit: "clickingitreal",
   },
   {
     date: "06.09.2026",
@@ -158,8 +170,18 @@ export const shows: Show[] = [
     venue: "The Humming Tree",
     city: "Bangalore",
     note: "Debut show as Exuvion",
-    image: "/img/live-outrage-debut.webp",
+    images: ["/img/live-debut-01.webp", "/img/live-debut-02.webp"],
   },
+];
+
+/** Full-bleed photo band that drifts between sections. */
+export const photoBand = [
+  "/img/live-debut-01.webp",
+  "/img/live-hyderabad-02.webp",
+  "/img/live-jam-01.webp",
+  "/img/live-debut-02.webp",
+  "/img/live-hyderabad-01.webp",
+  "/img/live-jam-02.webp",
 ];
 
 export const merch = {

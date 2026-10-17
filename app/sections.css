@@ -31,8 +31,105 @@
   50% { scale: 1.04; opacity: 0.085; }
 }
 
+/* ---------- hero collage ---------- */
+
+.shards {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shard {
+  position: absolute;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  opacity: 0;
+  /* pointer drift scaled by the shard's depth, plus its own resting angle */
+  transform: translate3d(
+      calc(var(--px, 0) * var(--depth) * -20px),
+      calc(var(--py, 0) * var(--depth) * -16px),
+      0
+    )
+    rotate(var(--rot));
+  animation: shard-in 1.8s var(--ease) var(--delay) forwards;
+  will-change: transform;
+}
+
+.shard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.15) brightness(0.72);
+}
+
+@keyframes shard-in {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 0.62;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* each fragment gets its own corner, scale and cut */
+.shard[data-i="1"] {
+  top: 21%;
+  left: 2.5%;
+  width: clamp(130px, 17vw, 300px);
+  aspect-ratio: 16 / 10;
+  clip-path: polygon(0 0, 100% 0, 100% 84%, 0 100%);
+}
+
+.shard[data-i="2"] {
+  top: 23%;
+  right: 3%;
+  width: clamp(110px, 14vw, 250px);
+  aspect-ratio: 1 / 1;
+  clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
+}
+
+.shard[data-i="3"] {
+  bottom: 13%;
+  left: 8%;
+  width: clamp(80px, 10vw, 180px);
+  aspect-ratio: 3 / 5;
+  clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%);
+}
+
+.shard[data-i="4"] {
+  bottom: 15%;
+  right: 5%;
+  width: clamp(140px, 19vw, 330px);
+  aspect-ratio: 16 / 9;
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+}
+
+.shard[data-i="5"] {
+  top: 9%;
+  left: 31%;
+  width: clamp(70px, 8vw, 150px);
+  aspect-ratio: 4 / 5;
+  clip-path: polygon(6% 0, 100% 0, 100% 94%, 0 100%);
+}
+
+@media (max-width: 860px) {
+  /* keep the smallest fragments off narrow screens so the mark can breathe */
+  .shard[data-i="3"],
+  .shard[data-i="5"] {
+    display: none;
+  }
+  .shard[data-i="1"] { top: 17%; left: -4%; }
+  .shard[data-i="2"] { top: 19%; right: -5%; }
+  .shard[data-i="4"] { bottom: 16%; right: -5%; }
+}
+
 .hero__logo {
   position: relative;
+  z-index: 2;
   width: min(88vw, 980px);
   animation: rise 1.6s var(--ease) both;
 }
@@ -44,6 +141,7 @@
 
 .hero__corner {
   position: absolute;
+  z-index: 3;
   display: grid;
   gap: 0.3rem;
   animation: fade-in 2s var(--ease) 0.6s both;
@@ -453,16 +551,19 @@
   border-top: 1px solid var(--line);
 }
 
+.live__block {
+  padding-block: clamp(1.75rem, 3.5vw, 3rem);
+  border-bottom: 1px solid var(--line);
+}
+
 .live__row {
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.35rem 1.5rem;
   align-items: baseline;
-  padding-block: clamp(1.1rem, 2.4vw, 1.8rem);
-  border-bottom: 1px solid var(--line);
-  transition: color 0.5s var(--ease), padding-left 0.6s var(--ease);
   color: var(--bone-dim);
+  transition: color 0.5s var(--ease);
 }
 
 @media (min-width: 760px) {
@@ -472,34 +573,14 @@
   }
 }
 
-.live__row:hover {
+.live__block:hover .live__row {
   color: var(--bone);
-  padding-left: 0.85rem;
-}
-
-/* a marker slides in from the gutter on hover */
-.live__row::before {
-  content: "";
-  position: absolute;
-  left: -1.1rem;
-  top: 50%;
-  width: 0.55rem;
-  height: 1px;
-  background: currentColor;
-  opacity: 0;
-  transform: translateX(-0.5rem);
-  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
-}
-
-.live__row:hover::before {
-  opacity: 1;
-  transform: none;
 }
 
 .live__title {
   font-family: var(--f-display), serif;
-  font-size: clamp(1.25rem, 3vw, 2.15rem);
-  line-height: 1.1;
+  font-size: clamp(1.35rem, 3.2vw, 2.4rem);
+  line-height: 1.08;
 }
 
 .live__note {
@@ -510,7 +591,7 @@
   .live__note {
     grid-column: 2;
     grid-row: 2;
-    margin-top: -0.35rem;
+    margin-top: -0.3rem;
   }
 }
 
@@ -527,74 +608,110 @@
   }
 }
 
-/* rows without a photo shouldn't imply one is coming */
-.live__row[data-haspic="false"]:hover {
-  cursor: default;
+.live__credit {
+  margin-top: 0.85rem;
 }
 
-.live__preview {
-  position: fixed;
-  z-index: 40;
-  width: 260px;
+/* ---------- drag-through film strip ---------- */
+
+.gallery {
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.gallery__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, clamp(200px, 26vw, 360px));
+  gap: clamp(0.5rem, 1.2vw, 1rem);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  cursor: grab;
+  padding-bottom: 0.25rem;
+  overscroll-behavior-x: contain;
+}
+
+.gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery__track[data-dragging="true"] {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+.gallery__track img {
+  width: 100%;
   aspect-ratio: 4 / 5;
-  translate: -50% -50%;
-  pointer-events: none;
-  opacity: 0;
-  scale: 0.94;
-  rotate: -1.5deg;
-  transition: opacity 0.4s var(--ease), scale 0.6s var(--ease),
-    rotate 0.6s var(--ease);
-  border: 1px solid var(--line);
+  object-fit: cover;
+  scroll-snap-align: start;
+  user-select: none;
+  filter: grayscale(1) contrast(1.12) brightness(0.84);
+  transition: filter 0.8s var(--ease), transform 1s var(--ease);
+}
+
+.gallery__track img:hover {
+  filter: grayscale(1) contrast(1.18) brightness(1);
+  transform: scale(1.012);
+}
+
+.gallery__track:focus-visible {
+  outline: 1px solid var(--bone);
+  outline-offset: 6px;
+}
+
+.gallery__rail {
+  position: relative;
+  height: 1px;
+  margin-top: 1rem;
+  background: var(--line);
+  max-width: 180px;
+}
+
+.gallery__rail span {
+  position: absolute;
+  inset: 0;
+  background: var(--bone);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease);
+}
+
+/* ---------- drifting photo band ---------- */
+
+.photoband {
   overflow: hidden;
+  border-block: 1px solid var(--line);
   background: var(--ink-2);
 }
 
-.live__preview[data-show="true"] {
-  rotate: 0deg;
+.photoband__skew {
+  transform: skewY(var(--skew, 0deg));
+  transition: transform 0.5s var(--ease);
+  will-change: transform;
 }
 
-.live__preview[data-show="true"] {
-  opacity: 1;
-  scale: 1;
+.photoband__track {
+  display: flex;
+  width: max-content;
+  gap: 2px;
+  animation: marquee 70s linear infinite;
+  animation-duration: calc(70s / var(--speed, 1));
 }
 
-.live__preview img {
-  width: 100%;
-  height: 100%;
+.photoband[data-reverse="true"] .photoband__track {
+  animation-direction: reverse;
+}
+
+.photoband__track img {
+  height: clamp(130px, 19vw, 260px);
+  width: auto;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.1);
+  filter: grayscale(1) contrast(1.1) brightness(0.7);
+  transition: filter 0.9s var(--ease);
 }
 
-@media (hover: none), (max-width: 759px) {
-  .live__preview {
-    display: none;
-  }
-}
-
-.live__strip {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 78%;
-  gap: 0.75rem;
-  margin-top: 2.5rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.75rem;
-  scrollbar-width: thin;
-}
-
-.live__strip img {
-  scroll-snap-align: start;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.1);
-}
-
-@media (min-width: 760px) {
-  .live__strip {
-    display: none;
-  }
+.photoband:hover .photoband__track img {
+  filter: grayscale(1) contrast(1.15) brightness(0.92);
 }
 
 /* ---------- merch ---------- */

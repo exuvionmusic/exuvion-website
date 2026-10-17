@@ -1,6 +1,8 @@
 import Image from "next/image";
+import HeroShards from "@/components/HeroShards";
 import LiveList from "@/components/LiveList";
 import Marquee from "@/components/Marquee";
+import PhotoBand from "@/components/PhotoBand";
 import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
 import {
@@ -11,6 +13,7 @@ import {
   links,
   members,
   merch,
+  photoBand,
   records,
   sections,
 } from "@/lib/content";
@@ -53,6 +56,8 @@ export default function Home() {
             height={1400}
             priority
           />
+
+          <HeroShards />
 
           <h1 className="hero__logo">
             <Image
@@ -229,7 +234,7 @@ export default function Home() {
           </div>
         </section>
 
-        <Marquee items={marqueeItems} />
+        <PhotoBand images={photoBand} />
 
         {/* ------------------------------------------------ 04 live */}
         <section className="section section--flush" id="live">
